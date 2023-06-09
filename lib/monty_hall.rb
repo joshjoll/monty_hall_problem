@@ -32,6 +32,7 @@ class MontyHall
     def first_guess(door)
         begin
             @game.set_first_guess(door) 
+        rescue Error::GameError => e
             puts e.object
             puts e.message
             return
@@ -41,6 +42,7 @@ class MontyHall
     def second_guess(door)
         begin
             @game.set_second_guess(door)
+        rescue Error::GameError => e
             puts e.object
             puts e.message
             return

@@ -21,7 +21,9 @@ class Game
     def set_first_guess(door)
         #TODO: maybe move these to their own methods, and trigger from a before callback?
         # raise Error::InelligibleGuess.new('Inelligible Guess') unless @guess_one.nil?
+        raise Error::InelligibleGuess.new('You have already taken a first guess. Please use the `second_guess(`your guess here`)` method to continue playing') unless @guess_one.nil?
 
+        raise Error::InelligibleGuess.new('Please guess either 1, 2, or 3 as an integer') unless (1..3).include?(door)
         
         @guess_one = door
 
@@ -31,10 +33,13 @@ class Game
 
     def set_second_guess(door)
         #TODO: maybe move these to their own methods, and trigger from a before callback?
+        raise Error::IncorrectOrder.new('Please use the `first_guess` method to make your first guess')  if @guess_one.nil?
 
+        raise Error::InelligibleGuess.new('You have already taken a second guess. The game is over; Please play again by instantiating a new instance of the game') unless @guess_two.nil?
 
         closed_doors = get_closed_doors.map(&:door_number)
 
+        raise Error::InelligibleGuess.new("Please guess either #{ closed_doors.join(' or ') } as an integer") unless closed_doors.include?(door)
 
         @guess_two = door
 
