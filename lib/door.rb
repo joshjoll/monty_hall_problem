@@ -1,7 +1,7 @@
 class Door
-    attr_reader :behind, :state, :door_number
+    attr_accessor :behind, :state, :door_number
 
-    def initialize(door_number)
+    def initialize(door_number=1)
       @behind = 'Goat'
       @state = 'Closed'
       @door_number = door_number
