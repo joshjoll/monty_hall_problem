@@ -11,8 +11,8 @@ class MontyHall
         puts "Changing the answer on the second guess: #{change_second_guess}"
 
         iterations.times do |index|
-            game = Game.new(use_animations: false)
-            
+            game = Game.new(show_instructions: false, show_prompts: false)
+
             game.set_first_guess(guess_one)
             
             second_guess = game.change_input_for_guess_two(change_second_guess)
@@ -24,9 +24,8 @@ class MontyHall
         return results
     end
 
-    # change this to true in the future
-    def initialize(use_animations: true)
-        @game = Game.new(use_animations: use_animations)
+    def initialize(show_instructions: true, show_prompts: true)
+        @game = Game.new(show_instructions: show_instructions, show_prompts: show_prompts)
     end 
 
     def first_guess
@@ -54,7 +53,7 @@ class MontyHall
     def play_again()
         # get the previous game's animations value
         animations = @game.animations
-        @game = Game.new(use_animations: animations)
+        @game = Game.new()
     end
 
     def instructions

@@ -1,17 +1,19 @@
 require_relative "door"
 require_relative 'game_error'
+
 class Game
     attr_accessor :animations
 
-    def initialize(use_animations: true)
+    def initialize(show_instructions: true, show_prompts: true, output: $stdout)
         @doors = []
 
         @guess_one = nil
         @guess_two = nil
-        @animations = use_animations
+        @use_animations = show_instructions
+        @show_prompts = show_prompts
 
+        instructions() if @use_animations
         set_game()
-        instructions() if @animations
 
     end
 
@@ -26,7 +28,7 @@ class Game
         
         @guess_one = door
 
-        game_delay() if @animations
+        game_delay() if @use_animations
         reveal_a_goat()
     end
 
@@ -41,7 +43,7 @@ class Game
 
         @guess_two = door
 
-        game_delay() if @animations
+        game_delay() if @use_animations
         resolve_game()
     end 
 
@@ -59,6 +61,8 @@ private
     def set_game
         create_doors()
         set_door_with_car()
+
+        puts "\nWhich door would you like to select with your first guess? Please input 1, 2, or 3 as an integer" if @show_prompts
     end
     
     def create_doors
@@ -91,10 +95,10 @@ private
     def resolve_game()
         car_door = @doors.find{|d| d.behind == "Car"}
         if car_door.door_number == @guess_two
-            puts "Congratulations on your new car! The car was behind door number #{car_door.door_number}. Please play again!" if @animations
+            puts "Congratulations on your new car! The car was behind door number #{car_door.door_number}. Please play again!" if @show_prompts
             return 'correct'
         else
-            puts "Congratulations on your new goat! The car was behind door number #{car_door.door_number}. Please try again!" if @animations
+            puts "Congratulations on your new goat! The car was behind door number #{car_door.door_number}. Please try again!" if @show_prompts
             return 'incorrect'
         end
     end
@@ -126,8 +130,7 @@ private
         line_4 = "You will then get the choice to either change your guess or stick with your original pick."
         line_5 = "You will then be showed your prize and which door held the Car."
         line_6 = ""
-        line_7 = "Which door would you like to select with your first guess? Please input 1, 2, or 3 as an integer"
-        return [line_1, line_2, line_3, line_4, line_5, line_6, line_7].join("\n")
+        return [line_1, line_2, line_3, line_4, line_5, line_6].join("\n")
     end
 
 end
