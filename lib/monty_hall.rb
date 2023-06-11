@@ -29,23 +29,27 @@ class MontyHall
         @game = Game.new(use_animations: use_animations)
     end 
 
-    def first_guess(door)
-        begin
-            @game.set_first_guess(door) 
-        rescue Error::GameError => e
-            puts e.object
-            puts e.message
-            return
+    def first_guess
+        loop do
+            guess_one = gets.chomp.to_i
+            begin
+                return @game.set_first_guess(guess_one) 
+            rescue Error::GameError => e
+                puts e.object
+                puts e.message
+            end
         end
     end
 
-    def second_guess(door)
-        begin
-            @game.set_second_guess(door)
-        rescue Error::GameError => e
-            puts e.object
-            puts e.message
-            return
+    def second_guess
+        loop do
+            guess_two = gets.chomp.to_i
+            begin
+                return @game.set_second_guess(guess_two)
+            rescue Error::GameError => e
+                puts e.object
+                puts e.message
+            end
         end
     end
 
