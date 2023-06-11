@@ -11,12 +11,12 @@ class MontyHall
         puts "Changing the answer on the second guess: #{change_second_guess}"
 
         iterations.times do |index|
+            game = Game.new(use_animations: false)
             
-            problem = MontyHall.new(use_animations: false)
-            problem.first_guess(guess_one)
+            game.set_first_guess(guess_one)
             
-            second_guess = problem.game.change_input_for_guess_two(change_second_guess)
-            result = problem.second_guess(second_guess)
+            second_guess = game.change_input_for_guess_two(change_second_guess)
+            result = game.set_second_guess(second_guess)
             
             puts "Game #{index + 1}: #{result}"
             results[result] += 1

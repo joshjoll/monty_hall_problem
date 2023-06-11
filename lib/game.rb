@@ -41,7 +41,7 @@ class Game
 
         @guess_two = door
 
-        game_delay()
+        game_delay() if @animations
         resolve_game()
     end 
 
