@@ -12,6 +12,7 @@ class Game
 
         set_game()
         instructions() if @animations
+
     end
 
     def instructions

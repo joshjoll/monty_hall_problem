@@ -35,7 +35,6 @@ class MontyHall
             begin
                 return @game.set_first_guess(guess_one) 
             rescue Error::GameError => e
-                puts e.object
                 puts e.message
             end
         end
@@ -47,7 +46,6 @@ class MontyHall
             begin
                 return @game.set_second_guess(guess_two)
             rescue Error::GameError => e
-                puts e.object
                 puts e.message
             end
         end
