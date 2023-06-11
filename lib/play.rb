@@ -4,8 +4,6 @@ new_game = true
 while new_game == true do
     game = MontyHall.new()
 
-    puts "Which door would you like to select with your first guess? Please input 1, 2, or 3 as an integer"
-
     game.first_guess()
 
     game.second_guess()

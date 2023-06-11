@@ -19,8 +19,6 @@ class Game
     end
 
     def set_first_guess(door)
-        #TODO: maybe move these to their own methods, and trigger from a before callback?
-        # raise Error::InelligibleGuess.new('Inelligible Guess') unless @guess_one.nil?
         raise Error::InelligibleGuess.new('You have already taken a first guess. Please use the `second_guess(`your guess here`)` method to continue playing') unless @guess_one.nil?
 
         raise Error::InelligibleGuess.new('Please guess either 1, 2, or 3 as an integer') unless (1..3).include?(door)
@@ -32,7 +30,6 @@ class Game
     end
 
     def set_second_guess(door)
-        #TODO: maybe move these to their own methods, and trigger from a before callback?
         raise Error::IncorrectOrder.new('Please use the `first_guess` method to make your first guess')  if @guess_one.nil?
 
         raise Error::InelligibleGuess.new('You have already taken a second guess. The game is over; Please play again by instantiating a new instance of the game') unless @guess_two.nil?
@@ -43,6 +40,7 @@ class Game
 
         @guess_two = door
 
+        game_delay()
         resolve_game()
     end 
 
@@ -86,16 +84,16 @@ private
         door_to_reveal.open_door
         other_door = @doors.find{|d| d.state == 'Closed' && d.door_number != @guess_one}
 
-        puts "Door number #{door_to_reveal.door_number} has been opened, and shows you a Goat. Would you like to change your guess to from #{@guess_one} to #{other_door.door_number} \n Enter your second guess using the instance method `second_guess(~your guess here~)`." if @animations
+        puts "Door number #{door_to_reveal.door_number} has been opened, and shows you a Goat. Please enter either your current selection (door #{@guess_one}) or change to door #{other_door.door_number} as an integer. \n" if @animations
     end
     
     def resolve_game()
         car_door = @doors.find{|d| d.behind == "Car"}
         if car_door.door_number == @guess_two
-            puts "Congratulations on your new car! The car was behind door number #{car_door.door_number}. Please play again" if @animations
+            puts "Congratulations on your new car! The car was behind door number #{car_door.door_number}. Please play again!" if @animations
             return 'correct'
         else
-            puts "Congratulations on your new goat! The car was behind door number #{car_door.door_number}. Please try again" if @animations
+            puts "Congratulations on your new goat! The car was behind door number #{car_door.door_number}. Please try again!" if @animations
             return 'incorrect'
         end
     end
@@ -127,7 +125,7 @@ private
         line_4 = "You will then get the choice to either change your guess or stick with your original pick."
         line_5 = "You will then be showed your prize and which door held the Car."
         line_6 = ""
-        line_7 = "To begin use the instance method `first_guess(~your guess here~)``."
+        line_7 = "Which door would you like to select with your first guess? Please input 1, 2, or 3 as an integer"
         return [line_1, line_2, line_3, line_4, line_5, line_6, line_7].join("\n")
     end
 
