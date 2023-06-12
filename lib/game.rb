@@ -3,7 +3,7 @@ require_relative 'game_error'
 require_relative 'instruction'
 
 class Game
-    attr_accessor :animations
+    attr_accessor :use_animations, :show_prompts
 
     def initialize(show_instructions: true, show_prompts: true, output: $stdout)
         @output = output
