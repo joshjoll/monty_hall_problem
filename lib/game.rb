@@ -1,5 +1,6 @@
 require_relative "door"
 require_relative 'game_error'
+require_relative 'instruction'
 
 class Game
     attr_accessor :animations
@@ -23,7 +24,7 @@ class Game
     end
 
     def set_first_guess(door)
-        raise Error::InelligibleGuess.new('You have already taken a first guess. Please use the `second_guess(`your guess here`)` method to continue playing') unless @guess_one.nil?
+        raise Error::IncorrectOrder.new('You have already taken a first guess. Please use the `second_guess(`your guess here`)` method to continue playing') unless @guess_one.nil?
 
         raise Error::InelligibleGuess.new('Please guess either 1, 2, or 3 as an integer') unless (1..3).include?(door)
         
@@ -63,7 +64,7 @@ private
         create_doors()
         set_door_with_car()
 
-        puts "\nWhich door would you like to select with your first guess? Please input 1, 2, or 3 as an integer" if @show_prompts
+        @output.puts "\nWhich door would you like to select with your first guess? Please input 1, 2, or 3 as an integer?" if @show_prompts
     end
     
     def create_doors
@@ -90,16 +91,16 @@ private
         door_to_reveal.open_door
         other_door = @doors.find{|d| d.state == 'Closed' && d.door_number != @guess_one}
 
-        puts "Door number #{door_to_reveal.door_number} has been opened, and shows you a Goat. Please enter either your current selection (door #{@guess_one}) or change to door #{other_door.door_number} as an integer. \n" if @animations
+        @output.puts "Door number #{door_to_reveal.door_number} has been opened, and shows you a Goat. Please enter either your current selection (door #{@guess_one}) or change to door #{other_door.door_number} as an integer. \n" if @show_prompts
     end
     
     def resolve_game()
         car_door = @doors.find{|d| d.behind == "Car"}
         if car_door.door_number == @guess_two
-            puts "Congratulations on your new car! The car was behind door number #{car_door.door_number}. Please play again!" if @show_prompts
+            @output.puts "Congratulations on your new car! The car was behind door number #{car_door.door_number}. Please play again!" if @show_prompts
             return 'correct'
         else
-            puts "Congratulations on your new goat! The car was behind door number #{car_door.door_number}. Please try again!" if @show_prompts
+            @output.puts "Congratulations on your new goat! The car was behind door number #{car_door.door_number}. Please try again!" if @show_prompts
             return 'incorrect'
         end
     end
@@ -115,13 +116,9 @@ private
 
     # Game Helpers
     def game_delay
-        sleep(0.5)
-        puts '...'
-        sleep(0.5)
-        puts '...'
-        sleep(0.5)
-        puts '...'
-        sleep(0.5)
+        3.times do
+            sleep(0.5)
+            @output.puts '...'
+        end
     end
-
 end
